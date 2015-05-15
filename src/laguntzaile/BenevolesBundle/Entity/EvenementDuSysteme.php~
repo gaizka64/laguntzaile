@@ -1,0 +1,100 @@
+<?php
+
+namespace laguntzaile\BenevolesBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * EvenementDuSysteme
+ *
+ * @ORM\Table(name="evenement_du_systeme", indexes={@ORM\Index(name="evenement_du_systeme_action_idx", columns={"action"}), @ORM\Index(name="IDX_F4DBA55FECCFAC24", columns={"id_affectation"}), @ORM\Index(name="IDX_F4DBA55F92921F4A", columns={"id_disponibilite"}), @ORM\Index(name="IDX_F4DBA55F8B13D439", columns={"id_evenement"}), @ORM\Index(name="IDX_F4DBA55F5F15257A", columns={"id_personne"}), @ORM\Index(name="IDX_F4DBA55F920C4E9B", columns={"id_poste"}), @ORM\Index(name="IDX_F4DBA55FE1F1E56B", columns={"id_tour"})})
+ * @ORM\Entity
+ */
+class EvenementDuSysteme
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="SEQUENCE")
+     * @ORM\SequenceGenerator(sequenceName="evenement_du_systeme_id_seq", allocationSize=1, initialValue=1)
+     */
+    private $id;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date_et_heure", type="datetime", nullable=false)
+     */
+    private $dateEtHeure;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="action", type="string", nullable=false)
+     */
+    private $action;
+
+    /**
+     * @var \Affectation
+     *
+     * @ORM\ManyToOne(targetEntity="Affectation")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_affectation", referencedColumnName="id")
+     * })
+     */
+    private $idAffectation;
+
+    /**
+     * @var \Disponibilite
+     *
+     * @ORM\ManyToOne(targetEntity="Disponibilite")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_disponibilite", referencedColumnName="id")
+     * })
+     */
+    private $idDisponibilite;
+
+    /**
+     * @var \Evenement
+     *
+     * @ORM\ManyToOne(targetEntity="Evenement")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_evenement", referencedColumnName="id")
+     * })
+     */
+    private $idEvenement;
+
+    /**
+     * @var \Personne
+     *
+     * @ORM\ManyToOne(targetEntity="Personne")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_personne", referencedColumnName="id")
+     * })
+     */
+    private $idPersonne;
+
+    /**
+     * @var \Poste
+     *
+     * @ORM\ManyToOne(targetEntity="Poste")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_poste", referencedColumnName="id")
+     * })
+     */
+    private $idPoste;
+
+    /**
+     * @var \Tour
+     *
+     * @ORM\ManyToOne(targetEntity="Tour")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_tour", referencedColumnName="id")
+     * })
+     */
+    private $idTour;
+
+
+}

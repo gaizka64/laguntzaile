@@ -1,0 +1,88 @@
+<?php
+
+namespace laguntzaile\BenevolesBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Disponibilite
+ *
+ * @ORM\Table(name="disponibilite", indexes={@ORM\Index(name="disponibilite_date_inscription_idx", columns={"date_inscription"}), @ORM\Index(name="disponibilite_statut_idx", columns={"statut"}), @ORM\Index(name="IDX_2CBACE2F8B13D439", columns={"id_evenement"}), @ORM\Index(name="IDX_2CBACE2F5F15257A", columns={"id_personne"})})
+ * @ORM\Entity
+ */
+class Disponibilite
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="SEQUENCE")
+     * @ORM\SequenceGenerator(sequenceName="disponibilite_id_seq", allocationSize=1, initialValue=1)
+     */
+    private $id;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date_inscription", type="datetime", nullable=true)
+     */
+    private $dateInscription;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="jours_et_heures_dispo", type="text", nullable=false)
+     */
+    private $joursEtHeuresDispo;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="liste_amis", type="text", nullable=false)
+     */
+    private $listeAmis;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="type_poste", type="text", nullable=false)
+     */
+    private $typePoste;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="commentaire", type="text", nullable=false)
+     */
+    private $commentaire;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="statut", type="string", nullable=false)
+     */
+    private $statut = 'proposee';
+
+    /**
+     * @var \Evenement
+     *
+     * @ORM\ManyToOne(targetEntity="Evenement")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_evenement", referencedColumnName="id")
+     * })
+     */
+    private $idEvenement;
+
+    /**
+     * @var \Personne
+     *
+     * @ORM\ManyToOne(targetEntity="Personne")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_personne", referencedColumnName="id")
+     * })
+     */
+    private $idPersonne;
+
+
+}

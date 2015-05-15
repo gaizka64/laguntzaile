@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Affectation" table="affectation">
+    <indexes>
+      <index name="affectation_statut_idx" columns="statut"/>
+      <index name="IDX_F4DD61D392921F4A" columns="id_disponibilite"/>
+      <index name="IDX_F4DD61D3E1F1E56B" columns="id_tour"/>
+    </indexes>
+    <id name="id" type="integer" column="id">
+      <generator strategy="SEQUENCE"/>
+    </id>
+    <field name="dateEtHeureProposee" type="datetime" column="date_et_heure_proposee" nullable="true"/>
+    <field name="statut" type="string" column="statut" nullable="false"/>
+    <field name="commentaire" type="text" column="commentaire" nullable="false"/>
+    <many-to-one field="idTour" target-entity="Tour">
+      <join-columns>
+        <join-column name="id_tour" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="idDisponibilite" target-entity="Disponibilite">
+      <join-columns>
+        <join-column name="id_disponibilite" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

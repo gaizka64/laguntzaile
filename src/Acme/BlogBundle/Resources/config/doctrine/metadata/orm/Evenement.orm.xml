@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Evenement" table="evenement">
+    <indexes>
+      <index name="evenement_archive_idx" columns="archive"/>
+      <index name="evenement_debut_idx" columns="debut"/>
+      <index name="IDX_B26681E4019AD94" columns="id_evenement_precedent"/>
+    </indexes>
+    <id name="id" type="integer" column="id">
+      <generator strategy="SEQUENCE"/>
+    </id>
+    <field name="nom" type="string" column="nom" nullable="false"/>
+    <field name="archive" type="boolean" column="archive" nullable="false"/>
+    <field name="debut" type="datetimetz" column="debut" nullable="false"/>
+    <field name="fin" type="datetimetz" column="fin" nullable="false"/>
+    <field name="lieu" type="string" column="lieu" nullable="false"/>
+    <field name="plan" type="text" column="plan" nullable="true"/>
+    <many-to-one field="idEvenementPrecedent" target-entity="Evenement">
+      <join-columns>
+        <join-column name="id_evenement_precedent" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

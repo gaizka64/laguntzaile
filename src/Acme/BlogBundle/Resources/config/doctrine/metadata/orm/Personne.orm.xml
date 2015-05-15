@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Personne" table="personne">
+    <indexes>
+      <index name="personne_code_postal_idx" columns="code_postal"/>
+      <index name="personne_date_naissance_idx" columns="date_naissance"/>
+      <index name="personne_domicile_idx" columns="domicile"/>
+      <index name="personne_email_idx" columns="email"/>
+      <index name="personne_nom_idx" columns="nom"/>
+      <index name="personne_portable_idx" columns="portable"/>
+      <index name="personne_prenom_idx" columns="prenom"/>
+      <index name="personne_ville_idx" columns="ville"/>
+    </indexes>
+    <id name="id" type="integer" column="id">
+      <generator strategy="SEQUENCE"/>
+    </id>
+    <field name="nom" type="string" column="nom" nullable="false"/>
+    <field name="prenom" type="string" column="prenom" nullable="false"/>
+    <field name="adresse" type="string" column="adresse" nullable="false"/>
+    <field name="codePostal" type="string" column="code_postal" nullable="false"/>
+    <field name="ville" type="string" column="ville" nullable="false"/>
+    <field name="portable" type="string" column="portable" nullable="false"/>
+    <field name="domicile" type="string" column="domicile" nullable="false"/>
+    <field name="email" type="string" column="email" nullable="false"/>
+    <field name="dateNaissance" type="date" column="date_naissance" nullable="true"/>
+    <field name="profession" type="string" column="profession" nullable="false"/>
+    <field name="competences" type="string" column="competences" nullable="false"/>
+    <field name="avatar" type="string" column="avatar" nullable="false"/>
+    <field name="langues" type="string" column="langues" nullable="false"/>
+    <field name="commentaire" type="string" column="commentaire" nullable="false"/>
+  </entity>
+</doctrine-mapping>

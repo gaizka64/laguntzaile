@@ -1,0 +1,64 @@
+<?php
+
+namespace laguntzaile\BenevolesBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Poste
+ *
+ * @ORM\Table(name="poste", indexes={@ORM\Index(name="IDX_7C890FAB8B13D439", columns={"id_evenement"})})
+ * @ORM\Entity
+ */
+class Poste
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="SEQUENCE")
+     * @ORM\SequenceGenerator(sequenceName="poste_id_seq", allocationSize=1, initialValue=1)
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="nom", type="string", nullable=false)
+     */
+    private $nom;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="description", type="text", nullable=false)
+     */
+    private $description;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="posx", type="decimal", precision=10, scale=0, nullable=false)
+     */
+    private $posx;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="posy", type="decimal", precision=10, scale=0, nullable=false)
+     */
+    private $posy;
+
+    /**
+     * @var \Evenement
+     *
+     * @ORM\ManyToOne(targetEntity="Evenement")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_evenement", referencedColumnName="id")
+     * })
+     */
+    private $idEvenement;
+
+
+}

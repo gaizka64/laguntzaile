@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Tour" table="tour">
+    <indexes>
+      <index name="tour_debut_idx" columns="debut"/>
+      <index name="tour_fin_idx" columns="fin"/>
+      <index name="tour_max_idx" columns="max"/>
+      <index name="tour_min_idx" columns="min"/>
+      <index name="IDX_6AD1F969920C4E9B" columns="id_poste"/>
+    </indexes>
+    <id name="id" type="integer" column="id">
+      <generator strategy="SEQUENCE"/>
+    </id>
+    <field name="debut" type="datetimetz" column="debut" nullable="false"/>
+    <field name="fin" type="datetimetz" column="fin" nullable="false"/>
+    <field name="min" type="integer" column="min" nullable="false"/>
+    <field name="max" type="integer" column="max" nullable="false"/>
+    <many-to-one field="idPoste" target-entity="Poste">
+      <join-columns>
+        <join-column name="id_poste" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

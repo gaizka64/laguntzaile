@@ -1,0 +1,64 @@
+<?php
+
+namespace laguntzaile\BenevolesBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Tour
+ *
+ * @ORM\Table(name="tour", indexes={@ORM\Index(name="tour_debut_idx", columns={"debut"}), @ORM\Index(name="tour_fin_idx", columns={"fin"}), @ORM\Index(name="tour_max_idx", columns={"max"}), @ORM\Index(name="tour_min_idx", columns={"min"}), @ORM\Index(name="IDX_6AD1F969920C4E9B", columns={"id_poste"})})
+ * @ORM\Entity
+ */
+class Tour
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="SEQUENCE")
+     * @ORM\SequenceGenerator(sequenceName="tour_id_seq", allocationSize=1, initialValue=1)
+     */
+    private $id;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="debut", type="datetimetz", nullable=false)
+     */
+    private $debut;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fin", type="datetimetz", nullable=false)
+     */
+    private $fin;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="min", type="integer", nullable=false)
+     */
+    private $min;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="max", type="integer", nullable=false)
+     */
+    private $max;
+
+    /**
+     * @var \Poste
+     *
+     * @ORM\ManyToOne(targetEntity="Poste")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_poste", referencedColumnName="id")
+     * })
+     */
+    private $idPoste;
+
+
+}

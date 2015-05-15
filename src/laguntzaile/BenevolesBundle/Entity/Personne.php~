@@ -1,0 +1,124 @@
+<?php
+
+namespace laguntzaile\BenevolesBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Personne
+ *
+ * @ORM\Table(name="personne", indexes={@ORM\Index(name="personne_code_postal_idx", columns={"code_postal"}), @ORM\Index(name="personne_date_naissance_idx", columns={"date_naissance"}), @ORM\Index(name="personne_domicile_idx", columns={"domicile"}), @ORM\Index(name="personne_email_idx", columns={"email"}), @ORM\Index(name="personne_nom_idx", columns={"nom"}), @ORM\Index(name="personne_portable_idx", columns={"portable"}), @ORM\Index(name="personne_prenom_idx", columns={"prenom"}), @ORM\Index(name="personne_ville_idx", columns={"ville"})})
+ * @ORM\Entity
+ */
+class Personne
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="SEQUENCE")
+     * @ORM\SequenceGenerator(sequenceName="personne_id_seq", allocationSize=1, initialValue=1)
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="nom", type="string", nullable=false)
+     */
+    private $nom;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="prenom", type="string", nullable=false)
+     */
+    private $prenom;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="adresse", type="string", nullable=false)
+     */
+    private $adresse;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="code_postal", type="string", nullable=false)
+     */
+    private $codePostal;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="ville", type="string", nullable=false)
+     */
+    private $ville;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="portable", type="string", nullable=false)
+     */
+    private $portable;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="domicile", type="string", nullable=false)
+     */
+    private $domicile;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="email", type="string", nullable=false)
+     */
+    private $email;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date_naissance", type="date", nullable=true)
+     */
+    private $dateNaissance;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="profession", type="string", nullable=false)
+     */
+    private $profession;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="competences", type="string", nullable=false)
+     */
+    private $competences;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="avatar", type="string", nullable=false)
+     */
+    private $avatar;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="langues", type="string", nullable=false)
+     */
+    private $langues;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="commentaire", type="string", nullable=false)
+     */
+    private $commentaire;
+
+
+}

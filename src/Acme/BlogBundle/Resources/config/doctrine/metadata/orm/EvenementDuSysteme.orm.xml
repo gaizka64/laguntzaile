@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="EvenementDuSysteme" table="evenement_du_systeme">
+    <indexes>
+      <index name="evenement_du_systeme_action_idx" columns="action"/>
+      <index name="IDX_F4DBA55FECCFAC24" columns="id_affectation"/>
+      <index name="IDX_F4DBA55F92921F4A" columns="id_disponibilite"/>
+      <index name="IDX_F4DBA55F8B13D439" columns="id_evenement"/>
+      <index name="IDX_F4DBA55F5F15257A" columns="id_personne"/>
+      <index name="IDX_F4DBA55F920C4E9B" columns="id_poste"/>
+      <index name="IDX_F4DBA55FE1F1E56B" columns="id_tour"/>
+    </indexes>
+    <id name="id" type="integer" column="id">
+      <generator strategy="SEQUENCE"/>
+    </id>
+    <field name="dateEtHeure" type="datetime" column="date_et_heure" nullable="false"/>
+    <field name="action" type="string" column="action" nullable="false"/>
+    <many-to-one field="idPoste" target-entity="Poste">
+      <join-columns>
+        <join-column name="id_poste" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="idTour" target-entity="Tour">
+      <join-columns>
+        <join-column name="id_tour" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="idPersonne" target-entity="Personne">
+      <join-columns>
+        <join-column name="id_personne" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="idEvenement" target-entity="Evenement">
+      <join-columns>
+        <join-column name="id_evenement" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="idDisponibilite" target-entity="Disponibilite">
+      <join-columns>
+        <join-column name="id_disponibilite" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="idAffectation" target-entity="Affectation">
+      <join-columns>
+        <join-column name="id_affectation" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

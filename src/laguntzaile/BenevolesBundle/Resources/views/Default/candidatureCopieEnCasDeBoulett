@@ -1,0 +1,309 @@
+{% extends "::vueMere.html.twig" %}
+{% block title %}Candidature pour l'événement {{evenement.nom}}{% endblock %}
+{% block contenuCentral %}
+    <div class="panel panel-default">
+        <div class="panel-heading"><h3 class="centrer">Candidature pour l'événement {{evenement.nom}}</h3></div>
+    
+    <div class="well">
+        <form method="post" {{form_enctype(formulaireInscription) }}>
+            <table class="table">
+                <thead>
+                  <tr>
+                    <th class="centrer" colspan="2">A propos de vous</th>
+                    
+                    <th class="centrer" colspan="2">Spécifiquement pour cet événement</th>
+                    
+                  </tr>
+                </thead>
+                <tbody>
+                        {# Le formulaire est composé de deux sous formulaires en réalité (voir DisponibiliteType et PersonneType). Il faut diviser en deux boucles, sinon il imbrique les boucles et l'affichage final est moche #}
+                        <tr>
+                            <td>
+                                
+                                {{ form_label(formulaireInscription.idPersonne.nom) }} (requis)
+                                <br />
+                                {{ form_label(formulaireInscription.idPersonne.prenom) }} (requis)
+                                <br />
+                                {{ form_label(formulaireInscription.idPersonne.dateNaissance) }}
+                            </td>
+                            
+                            
+                            
+                            <td>
+                                {{ form_errors(formulaireInscription.idPersonne.nom) }}
+                                {{ form_widget(formulaireInscription.idPersonne.nom) }} 
+                                <br />
+                                {{ form_errors(formulaireInscription.idPersonne.prenom) }}
+                                {{ form_widget(formulaireInscription.idPersonne.prenom) }}
+                                <br />
+                                {{ form_widget(formulaireInscription.idPersonne.dateNaissance.day, { 'attr': { 'size' : '2' } })   }}
+                                /
+                                {{ form_widget(formulaireInscription.idPersonne.dateNaissance.month, { 'attr': { 'size' : '2' } })   }}
+                                /
+                                {{ form_widget(formulaireInscription.idPersonne.dateNaissance.year, { 'attr': { 'size' : '4' } })   }}
+                                {{ form_errors(formulaireInscription.idPersonne.dateNaissance) }}
+                            </td>
+                            
+                            
+                            
+                            <td>
+                                {{ form_label(formulaireInscription.joursEtHeuresDispo) }}
+                                (Jours et heures de vos disponibilités et indisponibilités) 
+                            </td>
+                            
+                            
+                            
+                            <td>
+                            {{ form_errors(formulaireInscription.joursEtHeuresDispo) }}
+                                {{ form_widget(formulaireInscription.joursEtHeuresDispo) }} 
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td>
+
+                            </td>
+                            
+                            
+                            
+                            <td>
+                                 
+                            </td>
+                            
+                            
+                            
+                            <td>
+                        {{ form_label(formulaireInscription.listeAmis) }}
+                                <br />
+(Personnes avec qui vous souhaitez être ou ne pas être)
+                            </td>
+                            
+                            
+                            
+                            <td>
+                            {{ form_errors(formulaireInscription.listeAmis) }}
+                                {{ form_widget(formulaireInscription.listeAmis) }}
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td>
+                                
+                            </td>
+                            
+                            
+                            
+                            <td>
+                                
+                                
+                                
+                            </td>
+                            
+                            
+                            
+                            <td>
+                        {{ form_label(formulaireInscription.typePoste) }} <br /> Est-ce qu'il y a des postes spécifiques auxquels vous aimeriez être affecté ?
+                            </td>
+                            
+                            
+                            
+                            <td>
+                                {{ form_errors(formulaireInscription.typePoste) }}
+                                {{ form_widget(formulaireInscription.typePoste) }}
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td>
+                                {{ form_label(formulaireInscription.idPersonne.email) }}
+                                <br />
+                                {{ form_label(formulaireInscription.idPersonne.portable) }}
+                                <br/>
+                                {{ form_label(formulaireInscription.idPersonne.domicile) }}
+                            </td>
+                            
+                            
+                            
+                            <td>
+                                {{ form_errors(formulaireInscription.idPersonne.email) }}
+                                {{ form_widget(formulaireInscription.idPersonne.email) }} 
+                                <br />
+                                {{ form_errors(formulaireInscription.idPersonne.portable) }}
+                                {{ form_widget(formulaireInscription.idPersonne.portable) }}
+                                <br />
+                                {{ form_errors(formulaireInscription.idPersonne.domicile) }}
+                                {{ form_widget(formulaireInscription.idPersonne.domicile) }} 
+                            </td>
+                            
+                            
+                            
+                            <td>
+                         {{ form_label(formulaireInscription.commentaire) }}
+                            <br />
+                                (Pour nous aider à vous trouver un poste)
+                            </td>
+                            
+                            
+                            
+                            <td>
+                            {{ form_errors(formulaireInscription.commentaire) }}
+                                {{ form_widget(formulaireInscription.commentaire) }}
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td colspan="2">
+                                {{ form_label(formulaireInscription.idPersonne.adresse) }}
+                                <br />
+                                {{ form_errors(formulaireInscription.idPersonne.adresse) }}
+                                    {{ form_widget(formulaireInscription.idPersonne.adresse) }}
+                                <br />
+                                <span class="gauche">
+                                Code Postal{# form_label(formulaireInscription.idPersonne.codePostal) #}
+                            <br />
+                                {{ form_errors(formulaireInscription.idPersonne.codePostal) }}
+                                {{ form_widget(formulaireInscription.idPersonne.codePostal) }} 
+                                </span>
+                                <span class="droite">
+                                Commune{# form_label(formulaireInscription.idPersonne.ville) #}
+                                <br />
+                                {{ form_errors(formulaireInscription.idPersonne.ville) }}
+                                {{ form_widget(formulaireInscription.idPersonne.ville) }} 
+                                </span>
+
+                            </td>
+                            
+                            
+                            <td>
+                        
+                            </td>
+                            
+                            
+                            
+                            <td>
+                            
+                            </td>
+                        </tr>
+                        
+                        
+                        <tr>
+                            <td>
+                                {{ form_label(formulaireInscription.idPersonne.profession) }}
+                            </td>
+                            
+                            
+                            
+                            <td>
+                                {{ form_errors(formulaireInscription.idPersonne.profession) }}
+                                {{ form_widget(formulaireInscription.idPersonne.profession) }} 
+                            </td>
+                            
+                            
+                            
+                            <td>
+                        
+                            </td>
+                            
+                            
+                            
+                            <td>
+                            
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td>
+                                {{ form_label(formulaireInscription.idPersonne.competences) }}
+                            </td>
+                            
+                            
+                            
+                            <td>
+                                {{ form_errors(formulaireInscription.idPersonne.competences) }}
+                                {{ form_widget(formulaireInscription.idPersonne.competences) }} 
+                            </td>
+                            
+                            
+                            
+                            <td>
+                        
+                            </td>
+                            
+                            
+                            
+                            <td>
+                            
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td>
+                                {{ form_label(formulaireInscription.idPersonne.langues) }}
+                                <br />
+                                (ex : français,basque,...)
+                            </td>
+                            
+                            
+                            
+                            <td>
+                                {{ form_errors(formulaireInscription.idPersonne.langues) }}
+                                {{ form_widget(formulaireInscription.idPersonne.langues) }} 
+                            </td>
+                            
+                            
+                            
+                            <td>
+                        
+                            </td>
+                            
+                            
+                            
+                            <td>
+                            
+                            </td>
+                        </tr>            
+                    
+                        <tr>
+                            <td>
+                                {{ form_label(formulaireInscription.idPersonne.commentaire) }}
+                                <br />
+                                (Informations sur vous même que vous jugez utile de nous communiquer)
+                            </td>
+                            
+                            
+                            
+                            <td>
+                                {{ form_errors(formulaireInscription.idPersonne.commentaire) }}
+                                {{ form_widget(formulaireInscription.idPersonne.commentaire) }} 
+                            </td>
+                            
+                            
+                            
+                            <td>
+                        
+                            </td>
+                            
+                            
+                            
+                            <td>
+                            
+                            </td>
+                        </tr>            
+                    
+                        <tr>   
+                            <td>
+                                {# On "affiche" (en réalité c'est hidden dans le HTML) ce qui n'a pas été affiché pour que le Submit soit considéré comme valid  #}
+                                {{ form_rest(formulaireInscription) }}
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <td> <span class="pourBougerBouton"> <input type="submit" class="btn btn-primary" value="Envoyer !"/> </span> <td>
+                        </tr>
+                            
+                </tbody>
+            </table>
+                
+	   </form>
+        </div>
+</div>
+{% endblock %}

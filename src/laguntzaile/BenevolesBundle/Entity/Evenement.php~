@@ -1,0 +1,78 @@
+<?php
+
+namespace laguntzaile\BenevolesBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Evenement
+ *
+ * @ORM\Table(name="evenement", indexes={@ORM\Index(name="evenement_archive_idx", columns={"archive"}), @ORM\Index(name="evenement_debut_idx", columns={"debut"}), @ORM\Index(name="IDX_B26681E4019AD94", columns={"id_evenement_precedent"})})
+ * @ORM\Entity
+ */
+class Evenement
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="SEQUENCE")
+     * @ORM\SequenceGenerator(sequenceName="evenement_id_seq", allocationSize=1, initialValue=1)
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="nom", type="string", nullable=false)
+     */
+    private $nom;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="archive", type="boolean", nullable=false)
+     */
+    private $archive = false;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="debut", type="datetimetz", nullable=false)
+     */
+    private $debut;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fin", type="datetimetz", nullable=false)
+     */
+    private $fin;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="lieu", type="string", nullable=false)
+     */
+    private $lieu;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="plan", type="text", nullable=true)
+     */
+    private $plan;
+
+    /**
+     * @var \Evenement
+     *
+     * @ORM\ManyToOne(targetEntity="Evenement")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_evenement_precedent", referencedColumnName="id")
+     * })
+     */
+    private $idEvenementPrecedent;
+
+
+}

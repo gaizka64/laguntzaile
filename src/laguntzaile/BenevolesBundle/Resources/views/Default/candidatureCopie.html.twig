@@ -1,0 +1,14 @@
+{% extends "::vueMere.html.twig" %}
+
+{% block contenuCentral %}
+    <div class="panel panel-default">
+        <div class="panel-heading"><h3>Candidature pour l'événement {{evenement.nom}}</h3></div>
+    
+    <div class="well">
+        <form method="post" {{form_enctype(formulaireInscription) }}>
+        {{ form_widget(formulaireInscription) }}
+            <input type="submit" class="btn btn-primary" value="Envoyer !"/>
+	   </form>
+        </div>
+</div>
+{% endblock %}

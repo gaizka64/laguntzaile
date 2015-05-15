@@ -1,0 +1,16 @@
+laguntzaile_benevoles_candidature:
+    path:     /candidature/{idEvenement}/{idPersonne}
+    defaults: { _controller: laguntzaileBenevolesBundle:Default:candidature, idPersonne: 0 }
+    requirements:
+        idEvenement:  \d+
+        idPersonne:  \d+ 
+
+laguntzaile_benevoles_erreur:
+    path:     /erreur
+    defaults: { _controller: laguntzaileBenevolesBundle:Default:erreur}
+    
+laguntzaile_benevoles_affectation:
+    path:     /affectation/{idDisponibilite}/{clePublique}
+    defaults: { _controller: laguntzaileBenevolesBundle:Default:affectation}
+    requirements:
+         idDisponibilite:   \d+

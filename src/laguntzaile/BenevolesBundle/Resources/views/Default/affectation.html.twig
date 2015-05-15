@@ -1,0 +1,61 @@
+{% extends "::vueMere.html.twig" %}
+
+{% block contenuCentral %}
+
+
+        <h3>{{(personneEtEvenement[0].idEvenement.nom)}}</h3>
+        <br />
+
+<p>{{(personneEtEvenement[0].idPersonne.prenom)}} {{(personneEtEvenement[0].idPersonne.nom)}},</p>
+        <br />
+
+        {% if tabAffectations|length == 0 %}
+            <p> Aucune propositions d'affectation pour l'instant.</p>
+        {% else %}
+            {% if tabAffectations|length == 1 %}
+                <p> Voici l'affectation qui vous est proposée :</p>
+            {% elseif tabAffectations|length > 1 %}
+                <p> Voici la liste des affectations qui vous sont proposées :</p>
+            {% endif %}
+     
+<form method="post" {{form_enctype(formulaireAffectation)}}  novalidate="novalidate" >
+            <table class="table">
+                <thead>
+                  <tr>
+                    <th>Poste</th>
+                    <th>Tour</th>
+                    <th>Choix</th>
+                  </tr>
+
+                    {% for affectation in tabAffectations %}
+
+                     <tr>
+                            <td>{{affectation.idTour.idPoste.nom}}</td>
+                         
+                         {% if affectation.idTour.debut|date("d") == affectation.idTour.fin|date("d") %}
+                         
+                            <td>Le {{affectation.idTour.debut|date("d/m/Y")}}, de {{affectation.idTour.debut|date("H:i")}} à {{affectation.idTour.fin|date("H:i")}} </td>
+                         
+                         {% else %}
+                         
+                            <td>De {{affectation.idTour.debut|date("d/m/Y H:i") }} à {{affectation.idTour.fin|date("d/m/Y H:i")}}</td>
+                         
+                         {% endif %}
+                            <td>
+                                {{form_widget(formulaireAffectation["radio" ~ affectation.id])}}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </thead>
+                <tbody>
+                   
+               </tbody>
+            </table>
+    	<input type="submit" value="Submit">
+</form>
+
+
+                     </span> 
+
+        {% endif %}
+{% endblock %}

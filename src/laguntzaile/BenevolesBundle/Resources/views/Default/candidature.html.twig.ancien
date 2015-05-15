@@ -1,0 +1,223 @@
+{% extends "::vueMere.html.twig" %}
+{% block title %}Candidature pour l'événement {{evenement.nom}}{% endblock %}
+{% block contenuCentral %}
+<div class="panel panel-default">
+    <h4 class="centrer">Candidature pour l'événement {{evenement.nom}}</h4>   
+    <form method="post" novalidate="novalidate" {{form_enctype(formulaireInscription) }}> 
+        <div id="colone1" class="col-md-7">
+            
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="centrer" colspan="2"><h4><br/>A propos de vous <br/></h4></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            {{ form_label(formulaireInscription.idPersonne.nom) }}
+                            <br />                       
+                            {{ form_widget(formulaireInscription.idPersonne.nom) }}
+                            {{ form_errors(formulaireInscription.idPersonne.nom) }}
+                        </td>
+                        <td> 
+                            {{ form_label(formulaireInscription.idPersonne.prenom) }}
+                            <br />
+                            {{ form_widget(formulaireInscription.idPersonne.prenom) }}
+                            {{ form_errors(formulaireInscription.idPersonne.prenom) }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="centrer" colspan="2">
+                            <strong>Pour vous contacter</strong>
+                        </td>
+                    </tr>
+                    {# On ajoute une ligne au tableau avec l'erreur uniquement si l'erreur est définie #}
+                    <tr>
+                        <td>
+                            {{ form_label(formulaireInscription.idPersonne.adresse) }}
+                            <br />
+                            {{ form_widget(formulaireInscription.idPersonne.adresse) }}
+                            <br />
+                            <span class="gauche">
+                                <h6>Code Postal</h6>
+                                {{ form_widget(formulaireInscription.idPersonne.codePostal,
+                                { 'attr': {'maxlength' : '5', 'onKeyUp' : "Autotab('laguntzaile_benevolesbundle_disponibilite_idPersonne_ville',this.maxLength, this.value)"} }) }} 
+                                &nbsp &nbsp &nbsp
+                            </span>
+                            <h6>Commune</h6>
+                            {{ form_widget(formulaireInscription.idPersonne.ville) }}
+                        </td>
+                        <td>
+                            {{form_errors(formulaireInscription.idPersonne.portable)}}
+                            {{form_errors(formulaireInscription.idPersonne.email)}}
+                            {{form_errors(formulaireInscription.idPersonne.domicile)}}
+                            {{ form_label(formulaireInscription.idPersonne.email) }}    
+                            <br />
+                            {{form_widget(formulaireInscription.idPersonne.email) }}
+                            <br />
+                            {{ form_label(formulaireInscription.idPersonne.portable) }}
+                            <br />
+                            {{ form_widget(formulaireInscription.idPersonne.portable,
+                            { 'attr': {'onKeyUp' : "Autotab('laguntzaile_benevolesbundle_disponibilite_idPersonne_domicile',10, this.value)"} }) }}
+                            <br />
+                            {{ form_label(formulaireInscription.idPersonne.domicile) }}
+                            <br />
+                            {{ form_widget(formulaireInscription.idPersonne.domicile,
+                            { 'attr': {'onKeyUp' : "Autotab('laguntzaile_benevolesbundle_disponibilite_idPersonne_profession',10, this.value)"} }) }}
+                        </td>
+                    </tr>
+                    {% if form_errors(formulaireInscription.idPersonne.adresse) != "" or form_errors(formulaireInscription.idPersonne.codePostal) != "" or form_errors(formulaireInscription.idPersonne.ville) != "" %}
+                    <tr>
+                        <td colspan="2">                            
+                            {{ form_errors(formulaireInscription.idPersonne.adresse) }}
+                            {{ form_errors(formulaireInscription.idPersonne.codePostal) }}
+                            {{ form_errors(formulaireInscription.idPersonne.ville) }}
+                        </td>    
+                    </tr>
+                {% endif %}
+                            {# Si un des trois champs email / portable / domicile est vide alors que le formulaire a été soumis, alors on affiche un joli petit message #}
+                            
+                            {% if (formulaireInscription.vars.submitted == 'true') %}
+                                {% if formulaireInscription.idPersonne.email.vars.value == "" %}    
+                                    {% if formulaireInscription.idPersonne.domicile.vars.value == "" %}
+                                        {% if formulaireInscription.idPersonne.portable.vars.value == "" %}
+                                        <tr>
+                                            <td></td>
+                                            <td>
+                                                <div class="alert alert-danger" role="alert">
+                                                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                                    <span class="sr-only"></span>
+                                                    Au moins un des trois champs doit être renseigné
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        {% endif %}
+                                    {% endif %} 
+                                {% endif %}
+                            {% endif %}
+                        
+                </tr>
+            <tr>
+                <td class="centrer" colspan="2"><strong>Pour en savoir plus sur vous</strong></td>
+            </tr>
+            <tr>
+                <td>
+                    {{ form_label(formulaireInscription.idPersonne.profession) }}
+                    <br />
+                    {{ form_errors(formulaireInscription.idPersonne.profession) }}
+                    {{ form_widget(formulaireInscription.idPersonne.profession) }} 
+                </td>
+                <td>
+                    {{ form_label(formulaireInscription.idPersonne.dateNaissance) }}
+                    <br />
+                    {{ form_widget(formulaireInscription.idPersonne.dateNaissance.day,
+                    { 'attr': {'size' : '2', 'maxlength' : '2', 'onKeyUp' : "Autotab('laguntzaile_benevolesbundle_disponibilite_idPersonne_dateNaissance_month',this.maxLength, this.value)"} })   }}
+                    /
+                    {{ form_widget(formulaireInscription.idPersonne.dateNaissance.month,
+                    { 'attr': {'size' : '2', 'maxlength' : '2','onKeyUp' : "Autotab('laguntzaile_benevolesbundle_disponibilite_idPersonne_dateNaissance_year',this.maxLength, this.value)" } })  }}
+                    /
+                    {{ form_widget(formulaireInscription.idPersonne.dateNaissance.year,
+                    { 'attr': {'size' : '4','maxlength' : '4' } })   }}
+                    {{ form_errors(formulaireInscription.idPersonne.dateNaissance) }}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    {{ form_label(formulaireInscription.idPersonne.competences) }}    
+                    <br />
+                    {{ form_errors(formulaireInscription.idPersonne.competences) }}
+                    {{ form_widget(formulaireInscription.idPersonne.competences) }} 
+                </td>
+                <td>
+                    {{ form_label(formulaireInscription.idPersonne.langues) }} 
+                    <br />
+                    {{ form_errors(formulaireInscription.idPersonne.langues) }}
+                    {{ form_widget(formulaireInscription.idPersonne.langues) }} 
+                </td>
+            </tr>
+
+            <tr>
+                <td width="10%">
+                    {{ form_label(formulaireInscription.idPersonne.commentaire) }}
+                </td>
+                <td>
+                    {{ form_errors(formulaireInscription.idPersonne.commentaire) }}
+                    {{ form_widget(formulaireInscription.idPersonne.commentaire) }} 
+
+                </td>
+
+            </tr>
+            </tbody>
+        </table>
+</div>
+
+
+<div id="colone2" class="col-md-5">
+    <table class="table">
+        <thead>
+            <tr>
+                <th class="centrer"><h4>Spécifiquement <br /> pour cet événement</th></h4>
+            </tr>
+        </thead>
+    <tbody>
+        <tr>
+            <td>
+                {{ form_label(formulaireInscription.joursEtHeuresDispo) }}
+                <br />
+                {{ form_widget(formulaireInscription.joursEtHeuresDispo) }}     
+                {{ form_errors(formulaireInscription.joursEtHeuresDispo) }}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                {{ form_label(formulaireInscription.listeAmis) }}
+                <br />
+                {{ form_errors(formulaireInscription.listeAmis) }}
+                {{ form_widget(formulaireInscription.listeAmis) }}    
+            </td>   
+        </tr>
+        <tr>
+            <td>
+                {{ form_label(formulaireInscription.typePoste)  }}
+                <br /> 
+                {{ form_errors(formulaireInscription.typePoste) }}
+                {{ form_widget(formulaireInscription.typePoste) }}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                {{ form_label(formulaireInscription.commentaire) }}
+                <br />
+                {{ form_errors(formulaireInscription.commentaire) }}
+                {{ form_widget(formulaireInscription.commentaire) }} 
+            </td>
+        </tr>
+        <tr>
+            <td>
+
+                {{ form_rest(formulaireInscription) }}
+                <span class="pourBougerBouton">
+                    <input type="submit" class="btn btn-primary" value="Envoyer !"/>
+                </span>
+            </td>
+        </tr>
+    </tbody>
+    </table>
+</form>
+</div>
+</div>
+
+<script>
+    function Autotab(box, longueur, texte)
+    {
+        if (texte.length == longueur) 
+        {
+            document.getElementById(box).focus();
+        }
+    }
+</script>
+{% endblock %}
+
+
+
