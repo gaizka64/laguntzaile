@@ -1,6 +1,6 @@
 laguntzaile_benevoles_candidature:
-    path:     /candidature/{idEvenement}/{idPersonne}
-    defaults: { _controller: laguntzaileBenevolesBundle:Default:candidature, idPersonne: 0 }
+    path:     /candidature/{idEvenement}/{idPersonne}/{moulinageRecu}
+    defaults: { _controller: laguntzaileBenevolesBundle:Default:candidature, idPersonne: 0, moulinageRecu: "0" }
     requirements:
         idEvenement:  \d+
         idPersonne:  \d+ 
@@ -10,7 +10,7 @@ laguntzaile_benevoles_erreur:
     defaults: { _controller: laguntzaileBenevolesBundle:Default:erreur}
     
 laguntzaile_benevoles_affectation:
-    path:     /affectation/{idDisponibilite}/{clePublique}
+    path:     /affectation/{idDisponibilite}/{moulinageRecu}
     defaults: { _controller: laguntzaileBenevolesBundle:Default:affectation}
     requirements:
          idDisponibilite:   \d+

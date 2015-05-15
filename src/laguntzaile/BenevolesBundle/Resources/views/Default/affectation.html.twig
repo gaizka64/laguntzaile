@@ -3,6 +3,7 @@
 {% block contenuCentral %}
 
 
+
         <h3>{{(personneEtEvenement[0].idEvenement.nom)}}</h3>
         <br />
 
@@ -43,6 +44,10 @@
                          {% endif %}
                             <td>
                                 {{form_widget(formulaireAffectation["radio" ~ affectation.id])}}
+                                <br />
+                                <span id="span_form_radio{{affectation.id}}" hidden=true>
+                                    {{form_widget(formulaireAffectation["commentaire" ~ affectation.id])}}
+                                </span>
                             </td>
                         </tr>
                     {% endfor %}
@@ -51,11 +56,30 @@
                    
                </tbody>
             </table>
-    	<input type="submit" value="Submit">
+    	<input class="droite" type="submit" value="Envoyer !">
 </form>
 
 
-                     </span> 
+<script type="text/javascript">
+function test(ele)
+{
+    idElementCourant = ele.id; // ça c'est bon
+    concatenation = idElementCourant+"_1";
+    elementRadio = document.getElementById(concatenation);
+    spanAModifier = document.getElementById("span_"+idElementCourant);
+    
 
+    spanAModifier.setAttribute('hidden', 'true'); // Pour faire réapparaître
+    
+    if(elementRadio.checked == true)
+    {
+        spanAModifier.removeAttribute('hidden'); // Pour supprimer le hidden       
+    }
+    else
+    {
+        spanAModifier.setAttribute('hidden', 'true'); // Pour faire réapparaître
+    }
+}
+</script>
         {% endif %}
 {% endblock %}

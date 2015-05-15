@@ -17,7 +17,41 @@ class DisponibiliteType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-	       ->add('Affectation', 'collection', array('type' => new TagType()));
+	       ->add('idPersonne', new PersonneType(), array(
+                    'label' => ''))
+
+                ->add('joursEtHeuresDispo','textarea',array(
+                    'label' => 'Disponibilités',
+                    'attr' => array(
+                        'placeholder' => 'Jours et heures de vos disponibilités et indisponibilités',
+                        'rows' => '2',
+                        'cols' => '22')))
+
+                ->add('listeAmis','textarea',array(
+                    'required' => 'false',
+                    'label' => 'Affinités',
+                    'attr' => array(
+                        'placeholder' => 'Personnes avec qui vous souhaitez être ou ne pas être',
+                        'rows' => '2',
+                        'cols' => '22'
+                    )))
+
+                ->add('typePoste', 'textarea', array(
+                    'label' => 'Type de poste',
+                    'required' => 'false',
+                    'attr' => array(
+                        'placeholder' => 'Postes spécifiques auxquels vous aimeriez être affecté',
+                        'rows' => '2',
+                        'cols' => '22')))
+
+                ->add('commentaire', 'textarea',array(
+                    'required' => false,
+                    'label' => 'Remarques et commentaires',
+                    'attr' => array(
+                        'placeholder' => 'Pour nous aider à vous trouver un poste',
+                        'rows' => '2',
+                        'cols' => '22')));
+
     }
     
     /**

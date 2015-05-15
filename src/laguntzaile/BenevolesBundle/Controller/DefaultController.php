@@ -21,105 +21,76 @@ use Symfony\Component\Form\Forms;
 
 class DefaultController extends Controller
 {
-    public function indexAction($name)
+
+    public function candidatureAction($idEvenement,$idPersonne,$moulinageRecu,Request $requeteUtilisateur)
     {
-        return $this->render('laguntzaileBenevolesBundle:Default:index.html.twig', array('name' => $name));
-    }
-
-
-
-
-
-    public function candidatureAction($idEvenement,$idPersonne,$selIdEvenement,$selIdPersonne,Request $requeteUtilisateur)
-    {
-        $enregistrementEffectue = FALSE; // Au départ, l'enregistrement en BD n'est pas fait
-
-        // On vérifie si l'id Evenement en question existe dans la base de données
-        $gestionnaireEntite = $this->getDoctrine()->getManager();
-        $repositoryEvenement = $gestionnaireEntite->getRepository('laguntzaileBenevolesBundle:Evenement');
-
-        $evenement = $repositoryEvenement->find($idEvenement);
-
-        if($evenement == NULL)
-        {
-            return $this->render('laguntzaileBenevolesBundle:Default:erreur.html.twig');
-        }
-
-        $disponibilite = new Disponibilite();
-
+        
+        $moulinageRecuCorrect = false; //On part du principe que ce qui est reçu n'est pas correct
+        
         if ($idPersonne != 0)
         {
-            $repositoryPersonne = $gestionnaireEntite->getRepository('laguntzaileBenevolesBundle:Personne');
-            $personne = $repositoryPersonne->find($idPersonne);
-            if ($personne != null)   
-                $disponibilite->setIdPersonne($personne);
+            // Vérification des paramètres
+            $clePrive = "cec1E2T1s31S0l1d3Ma12D1fF3R3n72L0Tr3";
+            $moulinageReel = crypt($idPersonne,$clePrive);
+
+            if ($moulinageReel == $moulinageRecu) // On teste si ce qu'on a reçu correspond à ce qu'on devrait recevoir
+            {
+                $moulinageRecuCorrect = true;
+            }
+            
+            else // Sinon on redirige vers la même page mais sans les parametres
+            {
+               return $this->redirect($this->generateUrl('laguntzaile_benevoles_candidature', array('idEvenement' => $idEvenement))); 
+            }
         }
 
-        // Création du formulaire
-        /*$formulaireInscription = $this->createForm(new DisponibiliteType(), $disponibilite);*/
-
-        $formulaireInscription = $this->createFormBuilder($disponibilite)
-            ->add('idPersonne', new PersonneType(), array(
-                'label' => ''))
-
-            ->add('joursEtHeuresDispo','textarea',array(
-                'label' => 'Disponibilités',
-                'attr' => array(
-                    'placeholder' => 'Jours et heures de vos disponibilités et indisponibilités',
-                    'rows' => '2',
-                    'cols' => '22')))
-
-            ->add('listeAmis','textarea',array(
-                'required' => 'false',
-                'label' => 'Affinités',
-                'attr' => array(
-                    'placeholder' => 'Personnes avec qui vous souhaitez être ou ne pas être',
-                    'rows' => '2',
-                    'cols' => '22'
-                )))
-
-            ->add('typePoste', 'textarea', array(
-                'label' => 'Type de poste',
-                'required' => 'false',
-                'attr' => array(
-                    'placeholder' => 'Postes spécifiques auxquels vous aimeriez être affecté',
-                    'rows' => '2',
-                    'cols' => '22')))
-
-            ->add('commentaire', 'textarea',array(
-                'required' => false,
-                'label' => 'Remarques et commentaires',
-                'attr' => array(
-                    'placeholder' => 'Pour nous aider à vous trouver un poste',
-                    'rows' => '2',
-                    'cols' => '22')))
-
-            ->getForm();
-
-
-        $formulaireInscription->handleRequest($requeteUtilisateur);
-
-
-
-        if ($formulaireInscription->isValid() and $disponibilite->getIdPersonne()->getEmail() != null and $disponibilite->getIdPersonne()->getPortable() != null and $disponibilite->getIdPersonne()->getDomicile != null)
-        {
+            // On vérifie si l'id Evenement en question existe dans la base de données
             $gestionnaireEntite = $this->getDoctrine()->getManager();
-            $disponibilite->setIdEvenement($evenement);
+            $repositoryEvenement = $gestionnaireEntite->getRepository('laguntzaileBenevolesBundle:Evenement');
 
-            //$disponibilite->setDateInscription(new \DateTime("now"));
-            $disponibilite->setDateInscription(new \DateTime(date('Y-m-d G:i:s')));
+            $evenement = $repositoryEvenement->find($idEvenement);
 
-            $gestionnaireEntite->persist($disponibilite);
-            $gestionnaireEntite->flush();
-            $enregistrementEffectue = TRUE;
+            if($evenement == NULL)
+            {
+                throw $this->createNotFoundException('Erreur 404 : Evenement non trouvé.');
+            }
 
-            return $this->render('laguntzaileBenevolesBundle:Default:candidatureEffectuee.html.twig', array('enregistrementEffectue'=> $enregistrementEffectue, 'evenement' => $evenement)); 
+            $disponibilite = new Disponibilite();
+
+            if ($moulinageRecuCorrect == true) // Si l'idPersonne reçu et le moulinage (sel) correspondent alors on récup les infos en BD
+            {
+                $repositoryPersonne = $gestionnaireEntite->getRepository('laguntzaileBenevolesBundle:Personne');
+                $personne = $repositoryPersonne->find($idPersonne);
+                if ($personne != null)   
+                    $disponibilite->setIdPersonne($personne);
+            }
+
+            // Création du formulaire
+            $formulaireInscription = $this->createForm(new DisponibiliteType(), $disponibilite);
+
+            $formulaireInscription->handleRequest($requeteUtilisateur);
+
+
+
+            if ($formulaireInscription->isValid() and 
+                $disponibilite->getIdPersonne()->getEmail() != null and 
+                $disponibilite->getIdPersonne()->getPortable() != null and
+                $disponibilite->getIdPersonne()->getDomicile != null)
+            {
+                $gestionnaireEntite = $this->getDoctrine()->getManager();
+                $disponibilite->setIdEvenement($evenement);
+
+                $disponibilite->setDateInscription(new \DateTime(date('Y-m-d G:i:s')));
+
+                $gestionnaireEntite->persist($disponibilite);
+                $gestionnaireEntite->flush();
+
+                return $this->render('laguntzaileBenevolesBundle:Default:candidatureEffectuee.html.twig', array('evenement' => $evenement)); 
+            }
+
+            return $this->render('laguntzaileBenevolesBundle:Default:candidature.html.twig', array('formulaireInscription'=> $formulaireInscription->createView(), 'evenement' => $evenement));
+
         }
-
-
-
-        return $this->render('laguntzaileBenevolesBundle:Default:candidature.html.twig', array('formulaireInscription'=> $formulaireInscription->createView(),'enregistrementEffectue'=> $enregistrementEffectue, 'evenement' => $evenement));
-    }
 
 
 
@@ -131,27 +102,19 @@ class DefaultController extends Controller
         return $this->render('laguntzaileBenevolesBundle:Default:erreur.html.twig');
     }
 
-
-
-
-
-
-
-
-
-
-
-    public function affectationAction($idDisponibilite,$clePublique, Request $requeteUtilisateur)
+    
+    public function affectationAction($idDisponibilite,$moulinageRecu, Request $requeteUtilisateur)
     {
         // Vérification des paramètres
         $clePrive = "cec1E2T1s31S0l1d3";
-        $moulinage = crypt($idDisponibilite,$clePrive);
+        $moulinageReel = crypt($idDisponibilite,$clePrive);
 
-        if ($clePublique != $moulinage)
+        if ($moulinageRecu != $moulinageReel)
         {
-            throw $this->createNotFoundException('404 non trouvé');
+
+            throw $this->createNotFoundException('Erreur 404.');
         }
-        
+
         else
         {
             // On vérifie si l'id affectation passée en paramètre existe
@@ -167,10 +130,9 @@ class DefaultController extends Controller
             }
 
             // On récupère les Affectations liées à cette disponibilité
-
             $personneEtEvenement = $repositoryDisponibilite->getEvenementPersonne($idDisponibilite);
 
-            // On va créer le formulaire
+            // On crée un tableau vide qu'alimentera le formulaire
             $tabDonneesDuFormulaire = array();
 
             // Création du formulaire
@@ -179,15 +141,23 @@ class DefaultController extends Controller
 
             foreach ($tabAffectations as $affectationCourante)
             {
-                $formulaire->add('radio' . $affectationCourante->getId(),'choice', array(
+                $formulaire
+                    ->add('radio' . $affectationCourante->getId(),'choice', array(
                     'choices' => array('Acceptee' => ' Accepter', 'Refusee' => ' Refuser '),
                     'expanded' => true,
-                    'multiple' => false));
+                    'multiple' => false,
+                    'attr' => array('onClick' => 'test(this)')))
+                
+                    ->add('commentaire' . $affectationCourante->getId(),'textarea',array(
+                        'attr' => array(
+                            'placeholder' => 'Veuillez nous préciser pouquoi vous refusez cette affectation afin que nous vous fassions des propositions plus adaptées.',
+                            'rows' => '5',
+                            'cols' => '19')));
             }
 
             $formulaireAffectation = $formulaire->getForm();
             $formulaireAffectation->handleRequest($requeteUtilisateur); // Permet de prendre en compte la soumission
-
+            $formulaireNonViewe = $formulaireAffectation;
 
             if ($formulaireAffectation->isSubmitted())
             {   
@@ -204,28 +174,30 @@ class DefaultController extends Controller
                         $gestionnaireEntite->flush();
 
                     }
+                    
                     else if ($formulaireAffectation->getData()["radio" . $affectationCourante->getId()] == "Refusee")
                     {
                         $affectationCourante->setStatut("rejetee");
-
+                        $affectationCourante->setCommentaire($formulaireAffectation->getData()["commentaire" . $affectationCourante->getId()]);
                         $gestionnaireEntite->persist($affectationCourante);
                         $gestionnaireEntite->flush();   
                     }
                 }
 
-                return $this->affectationAction($idDisponibilite, new Request());
+                return $this->affectationAction($idDisponibilite,$moulinageRecu,new Request());
 
             }
+            
             else
             {
-
                 return $this->render('laguntzaileBenevolesBundle:Default:affectation.html.twig',array(
                     'tabAffectations'=> $tabAffectations,
                     'personneEtEvenement'=> $personneEtEvenement,
                     'formulaireAffectation'=> $formulaireAffectation->createView(),
-                    'tabAffectations'=>$tabAffectations
+                    'tabAffectations'=>$tabAffectations,
+                    'formulaireNonViewe'=>$formulaireNonViewe
                 ));
             }
         }
-        }
     }
+}
