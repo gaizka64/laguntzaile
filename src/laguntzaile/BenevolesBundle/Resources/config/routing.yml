@@ -14,3 +14,7 @@ laguntzaile_benevoles_affectation:
     defaults: { _controller: laguntzaileBenevolesBundle:Default:affectation}
     requirements:
          idDisponibilite:   \d+
+
+laguntzaile_benevoles_cryptage:
+    path:     /cryptage/{trucACrypter}/{clePrivee}
+    defaults: { _controller: laguntzaileBenevolesBundle:Default:cryptage}

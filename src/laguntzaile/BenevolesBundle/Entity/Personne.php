@@ -28,7 +28,7 @@ class Personne
      * @ORM\Column(name="nom", type="string", nullable=false)
      * @Assert\NotBlank(message="Le nom doit être spécifié.")
      * @Assert\Regex(
-     *          pattern="#^[a-zA-ZÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ]+([\-\' ][[a-zA-ZÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ]]+)*$#i",
+     *          pattern="#^[a-zA-ZÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ]+([\-\' ][a-zA-ZÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ]+)*$#i",
      *          message="Le nom doit être composé (uniquement) de lettres.")
      */
     private $nom;
@@ -139,7 +139,7 @@ class Personne
      * @ORM\Column(name="langues", type="string", nullable=false)
      * @Assert\Regex(
      *          pattern="#[a-z]+#i",
-     *          message="Les compétences doivent être composées de lettres.")
+     *          message="Les langues parlées doivent être composées de lettres.")
      */
     private $langues;
 

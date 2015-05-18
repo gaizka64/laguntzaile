@@ -73,17 +73,74 @@ class DefaultController extends Controller
 
 
             if ($formulaireInscription->isValid() and 
-                $disponibilite->getIdPersonne()->getEmail() != null and 
-                $disponibilite->getIdPersonne()->getPortable() != null and
-                $disponibilite->getIdPersonne()->getDomicile != null)
+                ($disponibilite->getIdPersonne()->getEmail() != null or 
+                $disponibilite->getIdPersonne()->getPortable() != null or
+                $disponibilite->getIdPersonne()->getDomicile() != null))
             {
                 $gestionnaireEntite = $this->getDoctrine()->getManager();
-                $disponibilite->setIdEvenement($evenement);
+                    
+                    // On initialise les valeurs à '' si c'est null
+                        // PERSONNE
+                    if (!(null !== ($disponibilite->getIdPersonne()->getPrenom())))
+                        $disponibilite->getIdPersonne()->setPrenom('');
+                    
+                    if (!(null !== ($disponibilite->getIdPersonne()->getAdresse())))
+                        $disponibilite->getIdPersonne()->setAdresse('');
+                    
+                    if (!(null !== ($disponibilite->getIdPersonne()->getCodePostal())))
+                        $disponibilite->getIdPersonne()->setCodePostal('');
+                    
+                    if (!(null !== ($disponibilite->getIdPersonne()->getVille())))
+                        $disponibilite->getIdPersonne()->setVille('');
+                    
+                    if (!(null !== ($disponibilite->getIdPersonne()->getPortable())))
+                        $disponibilite->getIdPersonne()->setPortable('');
+                    
+                    if (!(null !== ($disponibilite->getIdPersonne()->getDomicile())))
+                        $disponibilite->getIdPersonne()->setDomicile('');
+                    
+                    if (!(null !== ($disponibilite->getIdPersonne()->getEmail())))
+                        $disponibilite->getIdPersonne()->setEmail('');
+                    
+                    if (!(null !== ($disponibilite->getIdPersonne()->getDateNaissance())))
+                        $disponibilite->getIdPersonne()->setDateNaissance(new \DateTime(date('Y-m-d G:i:s')));
+                    
+                    if (!(null !== ($disponibilite->getIdPersonne()->getProfession())))
+                        $disponibilite->getIdPersonne()->setProfession('');
+                    
+                    if (!(null !== ($disponibilite->getIdPersonne()->getCompetences())))
+                        $disponibilite->getIdPersonne()->setCompetences('');
+                    
+                    if (!(null !== ($disponibilite->getIdPersonne()->getAvatar())))
+                        $disponibilite->getIdPersonne()->setAvatar('');
+                    
+                    if (!(null !== ($disponibilite->getIdPersonne()->getLangues())))
+                        $disponibilite->getIdPersonne()->setLangues('');
+                    
+                    if (!(null !== ($disponibilite->getIdPersonne()->getCommentaire())))
+                        $disponibilite->getIdPersonne()->setCommentaire('');
+                    
+                        // DISPONIBILITE
+                    
+                    if (!(null !== ($disponibilite->getJoursEtHeuresDispo())))
+                        $disponibilite->setJoursEtHeuresDispo('');
+                    
+                    if (!(null !== ($disponibilite->getListeAmis())))
+                        $disponibilite->setListeAmis('');
+                    
+                    if (!(null !== ($disponibilite->getTypePoste())))
+                        $disponibilite->setTypePoste('');
+                    
+                    if (!(null !== ($disponibilite->getCommentaire())))
+                        $disponibilite->setCommentaire('');
+                    
+                    
+                    $disponibilite->setIdEvenement($evenement);
+                    $disponibilite->setDateInscription(new \DateTime(date('Y-m-d G:i:s')));
 
-                $disponibilite->setDateInscription(new \DateTime(date('Y-m-d G:i:s')));
-
-                $gestionnaireEntite->persist($disponibilite);
-                $gestionnaireEntite->flush();
+                    $gestionnaireEntite->persist($disponibilite->getIdPersonne());
+                    $gestionnaireEntite->persist($disponibilite);
+                    $gestionnaireEntite->flush();
 
                 return $this->render('laguntzaileBenevolesBundle:Default:candidatureEffectuee.html.twig', array('evenement' => $evenement)); 
             }
@@ -96,19 +153,42 @@ class DefaultController extends Controller
 
 
 
-
+    
     public function erreurAction()
     {
         return $this->render('laguntzaileBenevolesBundle:Default:erreur.html.twig');
     }
 
-    
+    public function cryptageMaison($chaineACrypter,$clePrivee)
+    {
+        
+            $chaineCryptee = crypt($chaineACrypter,$clePrivee);
+            $termine = false;
+        
+        while($termine == false)
+        {
+            if (strpos($chaineCryptee,'/') !== false)
+            {
+               $chaineCryptee = crypt($chaineCryptee,$clePrivee); 
+            }
+            else
+            {
+             $termine = true;  
+            }
+        }
+        
+        return $chaineCryptee;
+            
+    }
     public function affectationAction($idDisponibilite,$moulinageRecu, Request $requeteUtilisateur)
     {
         // Vérification des paramètres
         $clePrive = "cec1E2T1s31S0l1d3";
-        $moulinageReel = crypt($idDisponibilite,$clePrive);
-
+        /*$moulinageReel = crypt($idDisponibilite,$clePrive);
+        */
+        
+        $moulinageReel = $this->cryptageMaison($idDisponibilite,$clePrive);
+        
         if ($moulinageRecu != $moulinageReel)
         {
 
@@ -122,12 +202,13 @@ class DefaultController extends Controller
             $repositoryAffectation = $gestionnaireEntite->getRepository('laguntzaileBenevolesBundle:Affectation');
             $repositoryDisponibilite = $gestionnaireEntite->getRepository('laguntzaileBenevolesBundle:Disponibilite');
 
-            $tabAffectations=$repositoryAffectation->getTabAffectations($idDisponibilite);
-
-            if ($tabAffectations == NULL)
+            $tabAffectations=$repositoryAffectation->getTabAffectationsProposees($idDisponibilite);
+            $tabAffectationsDejaTraitees = $repositoryAffectation->getTabAffectationsDejaTraitees($idDisponibilite);
+            
+            /*if ($tabAffectations == NULL)
             {
                 return $this->render('laguntzaileBenevolesBundle:Default:erreur.html.twig');
-            }
+            }*/
 
             // On récupère les Affectations liées à cette disponibilité
             $personneEtEvenement = $repositoryDisponibilite->getEvenementPersonne($idDisponibilite);
@@ -178,7 +259,12 @@ class DefaultController extends Controller
                     else if ($formulaireAffectation->getData()["radio" . $affectationCourante->getId()] == "Refusee")
                     {
                         $affectationCourante->setStatut("rejetee");
-                        $affectationCourante->setCommentaire($formulaireAffectation->getData()["commentaire" . $affectationCourante->getId()]);
+                        if ($commentaire = $formulaireAffectation->getData()["commentaire" . $affectationCourante->getId()] == null)
+                        {
+                            $commentaire = "";
+                        }
+                        
+                        $affectationCourante->setCommentaire($commentaire);
                         $gestionnaireEntite->persist($affectationCourante);
                         $gestionnaireEntite->flush();   
                     }
@@ -195,9 +281,18 @@ class DefaultController extends Controller
                     'personneEtEvenement'=> $personneEtEvenement,
                     'formulaireAffectation'=> $formulaireAffectation->createView(),
                     'tabAffectations'=>$tabAffectations,
-                    'formulaireNonViewe'=>$formulaireNonViewe
+                    'tabAffectationsDejaTraitees'=>$tabAffectationsDejaTraitees,
                 ));
             }
         }
+    }
+    
+    public function cryptageAction($trucACrypter,$clePrivee)
+    {
+     $valeurCryptee = $this->cryptageMaison($trucACrypter,$clePrivee);
+    return $this->render('laguntzaileBenevolesBundle:Default:cryptage.html.twig',array(
+                    'valeurCryptee'=> $valeurCryptee,
+                    'trucACrypter'=> $trucACrypter));
+        
     }
 }

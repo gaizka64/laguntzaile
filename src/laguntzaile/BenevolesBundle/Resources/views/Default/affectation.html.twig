@@ -10,6 +10,52 @@
 <p>{{(personneEtEvenement[0].idPersonne.prenom)}} {{(personneEtEvenement[0].idPersonne.nom)}},</p>
         <br />
 
+        {% if tabAffectationsDejaTraitees|length != 0 %}
+            {% if tabAffectationsDejaTraitees|length != 0 %}
+                <p>Voici l'affectation que vous avez déjà traité : </p>
+            {% else %}
+                <p>Voici la liste des affectations que vous avez déjà traité : </p>
+            {% endif %}
+                <br />
+<table class="table">
+                <thead>
+                  <tr>
+                    <th>Poste</th>
+                    <th>Tour</th>
+                    <th>Choix</th>
+                  </tr>
+                </thead>
+                <tbody>
+            {% for affectation in tabAffectationsDejaTraitees %}
+
+                     <tr>
+                            <td>{{affectation.idTour.idPoste.nom}}</td>
+                         
+                         {% if affectation.idTour.debut|date("d") == affectation.idTour.fin|date("d") %}
+                         
+                            <td>Le {{affectation.idTour.debut|date("d/m/Y")}}, de {{affectation.idTour.debut|date("H:i")}} à {{affectation.idTour.fin|date("H:i")}} </td>
+                         
+                         {% else %}
+                         
+                            <td>De {{affectation.idTour.debut|date("d/m/Y H:i") }} à {{affectation.idTour.fin|date("d/m/Y H:i")}}</td>
+                         
+                         {% endif %}
+                            <td>
+                                {% if affectation.statut == "acceptee" %}
+                                    <p>Acceptée</p>
+                                {% else %}
+                                    <p>Refusée</p>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+               </tbody>
+            </table>
+        {% endif %}
+
+        <br />
+        <br />
+        <br />
         {% if tabAffectations|length == 0 %}
             <p> Aucune propositions d'affectation pour l'instant.</p>
         {% else %}
@@ -28,7 +74,10 @@
                     <th>Choix</th>
                   </tr>
 
-                    {% for affectation in tabAffectations %}
+                    
+                </thead>
+                <tbody>
+                   {% for affectation in tabAffectations %}
 
                      <tr>
                             <td>{{affectation.idTour.idPoste.nom}}</td>
@@ -51,9 +100,6 @@
                             </td>
                         </tr>
                     {% endfor %}
-                </thead>
-                <tbody>
-                   
                </tbody>
             </table>
     	<input class="droite" type="submit" value="Envoyer !">
