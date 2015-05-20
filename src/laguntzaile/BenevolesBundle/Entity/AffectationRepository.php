@@ -31,7 +31,7 @@ class AffectationRepository extends EntityRepository
                                                         FROM laguntzaileBenevolesBundle:Affectation a
                                                         JOIN a.idTour t
                                                         JOIN t.idPoste p
-                                                        WHERE a.idDisponibilite = :idDisponibilite AND a.statut = \'acceptee\' OR a.statut = \'rejetee\'
+                                                        WHERE a.idDisponibilite = :idDisponibilite AND (a.statut = \'acceptee\' OR a.statut = \'rejetee\')
                                                         ORDER BY t.debut
                                                         
                                                     ');
