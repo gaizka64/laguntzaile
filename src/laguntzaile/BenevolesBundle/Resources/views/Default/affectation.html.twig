@@ -9,7 +9,6 @@
 
 <p>{{(personneEtEvenement[0].idPersonne.prenom)}} {{(personneEtEvenement[0].idPersonne.nom)}},</p>
         <br />
-
         {% if tabAffectationsDejaTraitees|length != 0 %}
             {% if tabAffectationsDejaTraitees|length != 0 %}
                 <p>Voici l'affectation que vous avez déjà traité : </p>
@@ -51,13 +50,13 @@
                     {% endfor %}
                </tbody>
             </table>
+        <br />
+        <br />
+        <br />
         {% endif %}
-
-        <br />
-        <br />
-        <br />
+        
         {% if tabAffectations|length == 0 %}
-            <p> Aucune propositions d'affectation pour l'instant.</p>
+            <p class="centrer"> Aucune propositions d'affectation pour l'instant.</p>
         {% else %}
             {% if tabAffectations|length == 1 %}
                 <p> Voici l'affectation qui vous est proposée :</p>

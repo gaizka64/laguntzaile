@@ -237,8 +237,9 @@ class DefaultController extends Controller
             $formulaireAffectation = $formulaire->getForm();
             $formulaireAffectation->handleRequest($requeteUtilisateur); // Permet de prendre en compte la soumission
             $formulaireNonViewe = $formulaireAffectation;
-
-            if ($formulaireAffectation->isValid())
+            $affectationNonRenseignee = false; // J'initialise cette variable pour savoir si une affectation au moins est mal renseignée
+            
+            if ($formulaireAffectation->isSubmitted())
             {   
                 $gestionnaireEntite = $this->getDoctrine()->getManager();
 
@@ -250,29 +251,38 @@ class DefaultController extends Controller
                         $affectationCourante->setStatut("acceptee");
 
                         $gestionnaireEntite->persist($affectationCourante);
-                        $gestionnaireEntite->flush();
+
 
                     }
                     
                     else if ($formulaireAffectation->getData()["radio" . $affectationCourante->getId()] == "Refusee")
                     {
                         $affectationCourante->setStatut("rejetee");
-                        if ($commentaire = $formulaireAffectation->getData()["commentaire" . $affectationCourante->getId()] == null)
+                        $commentaire = $formulaireAffectation->getData()["commentaire" . $affectationCourante->getId()];
+                        if ($commentaire == '')
                         {
-                            $commentaire = "";
+                            $commentaire = "Aucune justification précisée.";
                         }
                         
                         $affectationCourante->setCommentaire($commentaire);
                         $gestionnaireEntite->persist($affectationCourante);
-                        $gestionnaireEntite->flush();   
+
+                    }
+                    else
+                    {
+                        $affectationNonRenseignee = true;
                     }
                 }
-
-                return $this->affectationAction($idDisponibilite,$moulinageRecu,new Request());
-
+                
+                if ($affectationNonRenseignee != true)
+                {
+                    $gestionnaireEntite->flush();
+                    return $this->affectationAction($idDisponibilite,$moulinageRecu,new Request());
+                }
             }
             
-            else
+            
+            if ((!($formulaireAffectation->isSubmitted())) or $affectationNonRenseignee)
             {
                 return $this->render('laguntzaileBenevolesBundle:Default:affectation.html.twig',array(
                     'tabAffectations'=> $tabAffectations,

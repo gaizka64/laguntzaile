@@ -4,9 +4,12 @@
         <meta charset="UTF-8" />
         <title>{% block title %}{% endblock %}</title>
         {% block stylesheets %}
+        {% stylesheets 'laguntzaile/web/css/style.css' %}
+        <link href="{{ asset('css/style2.css') }}" rel="stylesheet" />
+        {% endstylesheets %}
         <link rel="stylesheet" href="{{ asset('css/Bootstrap.css') }}" type="text/css" />
-        <link rel="stylesheet" href="{{ asset('css/style.css') }}" type="text/css" />
-        
+        {#<link rel="stylesheet" href="{{ asset('css/style.css') }}" type="text/css" />#}
+    
         {% endblock %}
     </head>
     <body>

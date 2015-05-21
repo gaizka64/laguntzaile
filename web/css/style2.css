@@ -26,5 +26,8 @@ body
 
 .contournerPbWidth
 {
-    width: 50%;
+    margin-left: 10%;
+    width: 65%;
+    float: left;
+    display: inline-block;
 }
