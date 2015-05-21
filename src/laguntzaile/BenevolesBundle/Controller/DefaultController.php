@@ -72,10 +72,7 @@ class DefaultController extends Controller
 
 
 
-            if ($formulaireInscription->isValid() and 
-                ($disponibilite->getIdPersonne()->getEmail() != null or 
-                $disponibilite->getIdPersonne()->getPortable() != null or
-                $disponibilite->getIdPersonne()->getDomicile() != null))
+            if ($formulaireInscription->isValid())
             {
                 $gestionnaireEntite = $this->getDoctrine()->getManager();
                     
@@ -180,6 +177,7 @@ class DefaultController extends Controller
         return $chaineCryptee;
             
     }
+    
     public function affectationAction($idDisponibilite,$moulinageRecu, Request $requeteUtilisateur)
     {
         // Vérification des paramètres
@@ -240,7 +238,7 @@ class DefaultController extends Controller
             $formulaireAffectation->handleRequest($requeteUtilisateur); // Permet de prendre en compte la soumission
             $formulaireNonViewe = $formulaireAffectation;
 
-            if ($formulaireAffectation->isSubmitted())
+            if ($formulaireAffectation->isValid())
             {   
                 $gestionnaireEntite = $this->getDoctrine()->getManager();
 

@@ -21,5 +21,9 @@
 }
 body
 {
- background-image: url(../images/fond.jpg)   
+ background-image: url(../images/fond.jpg); 
+}
+.contournerPbWidth
+{
+    width: 50%;
 }

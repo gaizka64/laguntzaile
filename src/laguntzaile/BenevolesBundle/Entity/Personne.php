@@ -64,6 +64,7 @@ class Personne
      * @var string
      *
      * @ORM\Column(name="ville", type="string", nullable=false)
+     * @Assert\NotBlank(message="La commune doit être spécifiée.")
      * @Assert\Regex(
      *          pattern="#^[a-zA-ZÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ]+([\-\' ][[a-zA-ZÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ]]+)*$#i",
      *          message="La commune doit être composée (uniquement) de lettres.")
@@ -95,6 +96,7 @@ class Personne
      *
      * @ORM\Column(name="email", type="string", nullable=false)
      * @Assert\Email(message="Veuillez saisir une adresse de courriel valide.")
+     * @Assert\NotBlank(message="Une adresse de courriel doit être spécifiée.")
      */
     private $email;
 
@@ -149,7 +151,7 @@ class Personne
      * @ORM\Column(name="commentaire", type="string", nullable=false)
      * @Assert\Regex(
      *          pattern="#[a-z]+#i",
-     *          message="Le commentaire doit être composé de lettres.")
+     *          message="Ce champ doit être composé de lettres.")
      */
     private $commentaire;
 

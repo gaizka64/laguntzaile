@@ -102,6 +102,13 @@
                     {% endfor %}
                </tbody>
             </table>
+    {% if ((formulaireAffectation.vars.submitted) == true) and (tabAffectations|length != 0) %}
+    <div class="contournerPbWidth">
+        <div class="alert alert-danger" role="alert">
+            <p><strong>Attention :</strong> Vous devez répondre pour toutes les affectations</p>
+        </div>
+    </div>
+{% endif %}
     	<input class="droite" type="submit" value="Envoyer !">
 </form>
 

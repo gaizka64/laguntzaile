@@ -60,7 +60,7 @@ class PersonneType extends AbstractType
                     'placeholder' => 'ex : français,basque,...')))
                   
             ->add('commentaire','textarea',array(
-                'label' => 'Commentaire',
+                'label' => 'A propos de vous',
                 'attr' => array(
                         'placeholder' => 'Informations que vous souhaitez communiquer',
                         'rows' => '2',

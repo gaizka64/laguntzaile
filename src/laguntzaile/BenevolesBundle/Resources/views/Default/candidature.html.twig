@@ -61,13 +61,6 @@
                             {{ form_label(formulaireInscription.idPersonne.domicile) }}
                             {{ form_widget(formulaireInscription.idPersonne.domicile,
                             { 'attr': {'onKeyUp' : "Autotab('laguntzaile_benevolesbundle_disponibilite_idPersonne_profession',10, this.value)"} }) }}
-                            {% if formulaireInscription.vars.submitted == 'true' and formulaireInscription.idPersonne.vars.value.email == null and formulaireInscription.idPersonne.vars.value.domicile == null and formulaireInscription.idPersonne.vars.value.portable == null %}
-                            <div class="alert alert-danger" role="alert">
-                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                                <span class="sr-only"></span>
-                                Un des trois champs doit être renseigné
-                            </div>
-                            {% endif %}
 
                         </td>
                     </tr>
@@ -83,6 +76,7 @@
                 {% if form_errors(formulaireInscription.idPersonne.adresse) != '' %}
                 {{form_errors(formulaireInscription.idPersonne.adresse)}}
                 {% endif %}
+                
 
                 {% if form_errors(formulaireInscription.idPersonne.codePostal) != '' %}
                 {{form_errors(formulaireInscription.idPersonne.codePostal)}}
@@ -117,6 +111,7 @@
                 {{ form_widget(formulaireInscription.idPersonne.profession) }}
                 {{ form_errors(formulaireInscription.idPersonne.profession) }}
             </td>
+                 
             <td>
                 {{ form_label(formulaireInscription.idPersonne.dateNaissance) }}
                 <br />
@@ -175,8 +170,15 @@
                 {{ form_label(formulaireInscription.joursEtHeuresDispo) }}
                 <br />
                 {{ form_widget(formulaireInscription.joursEtHeuresDispo) }}     
-                {{ form_errors(formulaireInscription.joursEtHeuresDispo) }}
+                
             </td>
+            {% if form_errors(formulaireInscription.joursEtHeuresDispo) != '' %}
+                <tr>
+                    <td colspan="2">
+                        {{ form_errors(formulaireInscription.joursEtHeuresDispo) }}
+                    </td>
+                </tr>
+            {% endif %}
         </tr>
         <tr>
             <td>

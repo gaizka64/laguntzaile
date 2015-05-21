@@ -33,6 +33,7 @@ class Disponibilite
      * @var string
      *
      * @ORM\Column(name="jours_et_heures_dispo", type="text", nullable=false)
+     * @Assert\NotBlank(message="Les disponibilités doivent être spécifiées.")
      */
     private $joursEtHeuresDispo;
 
